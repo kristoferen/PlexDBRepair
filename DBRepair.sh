@@ -395,6 +395,22 @@ HostConfig() {
     HostType="ASUSTOR"
     return 0
 
+  # TrueNAS SCALE 22.12 Official Plex App
+  # NOTE: You will have to configure the locations yourself as these are dependent on your TrueNAS datasets
+  # NOTE: SUPER DUPER BETA - MAKE BACKUPS OF EVERYTHING AS THIS MAY BRICK YOUR SYSTEM/APPS!
+  # NOTE: Stop the Plex App before running the script!
+  elif [ -d "/mnt/CACHE/plex/Library/Application Support" ]; then
+
+    PLEX_SQLITE="/mnt/CACHE/plextemp/SQLITE" ## Need to copy this out from the Docker container, `cp -R "/usr/lib/plexmediaserver/Plex SQLite" /YOUR/MOUNTED/PATH
+    AppSuppDir="/mnt/CACHE/plex/Library/Application Support"
+    PID_FILE="$AppSuppDir/Plex Media Server/plexmediaserver.pid"
+    DBDIR="$AppSuppDir/Plex Media Server/Plug-in Support/Databases"
+    LOGFILE="$DBDIR/DBRepair.log"
+    LOG_TOOL="logger"
+
+    HostType="TrueNAS"
+    return 0
+
 
   # Docker (All main docker variants except binhex)
   elif [ "$(grep docker /proc/1/cgroup | wc -l)" -gt 0 ] && [ -d "/config/Library/Application Support" ]; then
